@@ -11,7 +11,7 @@
 
 
 ## Open a conenction to the file
-data_on_disk <- file("..\\household_power_consumption.txt", open="rt")
+data_on_disk <- file("household_power_consumption.txt", open="rt")
 
 
 
@@ -51,8 +51,8 @@ data <- read.table("household_power_consumption.txt",
                    sep = ";",
                    stringsAsFactors=FALSE,
                    skip=skipped_lines,
-                   nrows= nobs
-)
+                   nrows= nobs)
+
 
 ## Since we skipped lines above, we have to read in our header separately
 header <- read.table("household_power_consumption.txt", 
@@ -74,7 +74,7 @@ rm(nobs, end_date, start_date, data_on_disk, skipped_lines, header)
 
 
 
-## This is all that's needed to generate the desired histogram
+## Send a histogram plot to the plot1.png file
 png("plot1.png")
 
 hist(data$Global_active_power,

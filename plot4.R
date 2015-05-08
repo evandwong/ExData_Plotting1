@@ -51,8 +51,8 @@ data <- read.table("household_power_consumption.txt",
                    sep = ";",
                    stringsAsFactors=FALSE,
                    skip=skipped_lines,
-                   nrows= nobs
-                  )
+                   nrows= nobs)
+
 
 ## Since we skipped lines above, we have to read in our header separately
 header <- read.table("household_power_consumption.txt", 
@@ -72,6 +72,56 @@ rm(nobs, end_date, start_date, data_on_disk, skipped_lines, header)
 ###################################
 ###################################//
 
+##  Get the vertical limits for the third plot
+ymax <- max(
+   max(data$Sub_metering_1),
+   max(data$Sub_metering_2),
+   max(data$Sub_metering_3))
+ymin <- min(
+   min(data$Sub_metering_1),
+   min(data$Sub_metering_2),
+   min(data$Sub_metering_3))
 
+## Send a set of plots to plot4.png
+png("plot4.png")
 
+## Setup multiple plots in a 2x2 grid
+par(mfrow = c(2,2))
 
+plot(data$DateTime,
+     data$Global_active_power,
+     xlab = "",
+     ylab = "Global Active Power",
+     type = "l")
+
+plot(data$DateTime,
+     data$Voltage,
+     xlab = "datetime",
+     ylab = "Voltage",
+     type = "l")
+
+plot(data$DateTime,
+     data$Sub_metering_1,
+     ylim = c(ymin,ymax),
+     xlab = "",
+     ylab = "Energy sub metering",
+     type = "n")
+
+lines(data$DateTime, data$Sub_metering_1, col="Black")
+lines(data$DateTime, data$Sub_metering_2, col="Red")
+lines(data$DateTime, data$Sub_metering_3, col="Blue")
+
+legend(x="topright",
+       c("Sub_metering_1","Sub_metering_2", "Sub_metering_3"),
+       lty = c(1,1),
+       lwd = c(1,1),
+       col = c("Black", "Red", "Blue"))
+
+plot(data$DateTime,
+     data$Global_reactive_power,
+     ylim = c(ymin,ymax),
+     xlab = "datetime",
+     ylab = "Global_reactive_power",
+     type = "l")
+
+dev.off()

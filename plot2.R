@@ -51,8 +51,8 @@ data <- read.table("household_power_consumption.txt",
                    sep = ";",
                    stringsAsFactors=FALSE,
                    skip=skipped_lines,
-                   nrows= nobs
-                  )
+                   nrows= nobs)
+
 
 ## Since we skipped lines above, we have to read in our header separately
 header <- read.table("household_power_consumption.txt", 
@@ -73,5 +73,13 @@ rm(nobs, end_date, start_date, data_on_disk, skipped_lines, header)
 ###################################//
 
 
+## send a line plot to the plot2.png file
+png("plot2.png")
 
+plot(data$DateTime,
+     data$Global_active_power,
+     xlab="",
+     ylab="Global Active Power (kilowatts)",
+     type = "l")
 
+dev.off()

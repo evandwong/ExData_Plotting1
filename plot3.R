@@ -51,8 +51,8 @@ data <- read.table("household_power_consumption.txt",
                    sep = ";",
                    stringsAsFactors=FALSE,
                    skip=skipped_lines,
-                   nrows= nobs
-                  )
+                   nrows= nobs)
+
 
 ## Since we skipped lines above, we have to read in our header separately
 header <- read.table("household_power_consumption.txt", 
@@ -72,6 +72,35 @@ rm(nobs, end_date, start_date, data_on_disk, skipped_lines, header)
 ###################################
 ###################################//
 
+## retrieve the set the vertical limits of the plot
+ymax <- max(
+   max(data$Sub_metering_1),
+   max(data$Sub_metering_2),
+   max(data$Sub_metering_3))
+ymin <- min(
+   min(data$Sub_metering_1),
+   min(data$Sub_metering_2),
+   min(data$Sub_metering_3))
 
 
+## Send a multiple line plot with legend to the plot3.png file
+png("plot3.png")
 
+plot(data$DateTime,
+     data$Sub_metering_1,
+     ylim=c(ymin,ymax),
+     xlab="",
+     ylab="Energy sub metering",
+     type="n")
+
+lines(data$DateTime, data$Sub_metering_1, col="Black")
+lines(data$DateTime, data$Sub_metering_2, col="Red")
+lines(data$DateTime, data$Sub_metering_3, col="Blue")
+
+legend(x="topright",
+       c("Sub_metering_1","Sub_metering_2", "Sub_metering_3"),
+       lty=c(1,1),
+       lwd=c(1,1),
+       col=c("Black", "Red", "Blue"))
+
+dev.off()
